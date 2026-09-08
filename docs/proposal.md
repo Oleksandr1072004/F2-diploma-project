@@ -1,7 +1,7 @@
 # Thesis Proposal: AutoSpark Pro
 
-**Author:** [Ваше Прізвище І.]
-**Supervisor:** [ПІБ Наукового Керівника]
+**Author:** Гриненко Олександр Васильович
+**Supervisor:** Остапов Сергій Едуардович
 **Specialty:** F2 Software Engineering
 
 ## Project Title
