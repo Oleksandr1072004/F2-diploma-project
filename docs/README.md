@@ -1,7 +1,7 @@
 # F2-diploma-project: AutoSpark Pro
 
 ## Посилання на документацію
-- [Розділ 1 (Google Docs)]([https://docs.google.com/document/d/ваш_ID/edit](https://docs.google.com/document/d/17Lfd5FLBsOuh6W_G9VUYU1blpF5D_X8SNjsQ51J_Chw/edit?tab=t.0)) — режим "Can comment"
+- [Розділ 1 (Google Docs)](https://docs.google.com/document/d/ваш_ID/edit) — режим "Can comment"
 
   
 ## Календарний план роботи
