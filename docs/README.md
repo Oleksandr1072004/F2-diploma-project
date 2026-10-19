@@ -1,5 +1,9 @@
 # F2-diploma-project: AutoSpark Pro
 
+## Посилання на документацію
+- [Розділ 1 (Google Docs)]([https://docs.google.com/document/d/ваш_ID/edit](https://docs.google.com/document/d/17Lfd5FLBsOuh6W_G9VUYU1blpF5D_X8SNjsQ51J_Chw/edit?tab=t.0)) — режим "Can comment"
+
+  
 ## Календарний план роботи
 
 | № з/п | Назва етапу | Термін виконання | Статус |
@@ -12,3 +16,17 @@
 | 6 | Комплексне тестування (Unit, інтеграційне, на реальному авто) | Вересень 2026 - Березень 2027 | To Do |
 | 7 | Написання диплома, підготовка презентації та захист | Березень - Травень 2027 | To Do |
 | 8 | Стаття, документація, передзахист | Квітень 2027 | To Do |
+
+
+## Матриця нефункціональних вимог (NFRs)
+
+| Категорія | Вимога |
+|:---|:---|
+| Продуктивність | Latency API на p95 ≤ 200 мс при 500 RPS |
+| Масштабованість | Горизонтальне масштабування до 10 інстансів (Docker/K8s) |
+| Асинхронність | Kafka ≥ 1000 подій/с |
+| Безпека | OAuth 2.0 / OIDC, JWT, TLS 1.3 |
+| Комплаєнс | GDPR, OWASP ASVS Level 2 |
+| Надійність | Circuit Breaker, Retry, доступність 99.5% |
+| Observability | OpenTelemetry, Prometheus, Grafana, Jaeger |
+| Резервне копіювання | RPO ≤ 1 год, RTO ≤ 4 год |
