@@ -5,7 +5,7 @@ import logging
 
 from app.config import settings
 from app.database.crud import init_db
-from app.api import auth, cars, diagnostics, keys, firmware, reports
+from app.api import auth, cars, clients, diagnostics, keys, firmware, reports
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ app.include_router(diagnostics.router)
 app.include_router(keys.router)
 app.include_router(firmware.router)
 app.include_router(reports.router)
-
+app.include_router(clients.router)
 
 @app.get("/")
 async def root():
