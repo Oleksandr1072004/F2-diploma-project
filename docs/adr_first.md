@@ -29,7 +29,7 @@ Proposed
 
 
 
-# ADR-001: Вибір Apache Kafka як брокера повідомлень
+# ADR-001: Вибір Apache Kafka як брокера повідомлень (new)
 
 ## Status
 Approved
