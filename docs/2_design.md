@@ -1,6 +1,6 @@
 ### 2.1. C4 Container Diagram
 
-<img width="1361" height="1133" alt="Frame 223207" src="https://github.com/user-attachments/assets/86bd6455-0229-41fc-9502-9a49e47023e6" />
+<img width="1361" height="1133" alt="Frame 223207 (1)" src="https://github.com/user-attachments/assets/ede04b97-1733-44b8-8fe1-9c022d5cc45b" />
 
 
 ### 2.2. C4 Container Diagram (Level 2)
