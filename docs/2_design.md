@@ -7,4 +7,4 @@
 <img width="2181" height="2044" alt="Frame 223216 (1)" src="https://github.com/user-attachments/assets/04baf9b6-3374-436c-bbdf-31fe670c05ea" />
 
 ### 2.3. C4 Container Diagram (Diagnostic Service)
-<img width="2165" height="2545" alt="Group 905" src="https://github.com/user-attachments/assets/57a51be7-0c92-4cfe-bf2e-8fbdb09be384" />
+<img width="2165" height="2545" alt="Group 905 (1)" src="https://github.com/user-attachments/assets/42ce2eea-995a-48fb-866e-d8e841f7e151" />
