@@ -4,7 +4,7 @@
 
 
 ### 2.2. C4 Container Diagram (Level 2)
-<img width="2048" height="2231" alt="image" src="https://github.com/user-attachments/assets/96db5973-85ba-4f06-a284-729b8c382aba" />
+<img width="2181" height="2044" alt="Frame 223216 (1)" src="https://github.com/user-attachments/assets/04baf9b6-3374-436c-bbdf-31fe670c05ea" />
 
 ### 2.3. C4 Container Diagram (Diagnostic Service)
 <img width="2048" height="2633" alt="image" src="https://github.com/user-attachments/assets/5c71b396-f672-4191-9fdd-fc14d9ba0a56" />
