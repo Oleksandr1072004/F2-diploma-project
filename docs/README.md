@@ -2,12 +2,13 @@
 
 ## Посилання на документацію
 - [Розділ 1 (Google Docs)](https://docs.google.com/document/d/17Lfd5FLBsOuh6W_G9VUYU1blpF5D_X8SNjsQ51J_Chw/edit?tab=t.0) — режим "Can comment"
-- 
+  
 ## Навігація документації
 - [Специфікація вимог (SRS)](./srs.md)
 - [Розділ 2: Проєктування архітектури](./2_design.md)
 - [Architecture Decision Records (ADR)](./adr/)
-  
+- [API Contracts](./api/openapi.yaml)
+
 ## Календарний план роботи
 
 | № з/п | Назва етапу | Термін виконання | Статус |
