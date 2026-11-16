@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: AutoSpark Pro API
+  description: API для екосистеми автомобільної діагностики AutoSpark Pro
+  version: 1.0.0
+servers:
+  - url: https://api.autospark.pro/v1
+    description: Production Server
+
+security:
+  - BearerAuth: []
+
+paths:
+  /diagnostics:
+    post:
+      summary: Ініціювати нову діагностичну сесію
+      tags: [Diagnostics]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [vehicle_id, telemetry_data]
+              properties:
+                vehicle_id:
+                  type: string
+                  format: uuid
+                  description: ID автомобіля
+                telemetry_data:
+                  type: object
+                  description: Сирі дані OBD-II (RPM, speed, temperature)
+                  additionalProperties: true
+      responses:
+        '201':
+          description: Сесію створено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosticSessionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /diagnostics/{session_id}:
+    get:
+      summary: Отримати результати діагностики
+      tags: [Diagnostics]
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успішна відповідь
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosticSessionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Доступ заборонено (сесія належить іншому користувачу)
+        '404':
+          description: Сесію не знайдено
+
+  /reports/{session_id}:
+    post:
+      summary: Згенерувати PDF-звіт для сесії
+      tags: [Reports]
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '202':
+          description: Запит на генерацію прийнято (асинхронна обробка)
+          headers:
+            Location:
+              description: URL для перевірки статусу генерації звіту
+              schema:
+                type: string
+                format: uri
+                example: /api/v1/reports/123e4567-e89b-12d3-a456-426614174000/status
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Доступ заборонено (сесія належить іншому користувачу)
+        '404':
+          description: Сесію не знайдено
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Введіть JWT-токен отриманий при автентифікації
+
+  schemas:
+    DiagnosticSessionResponse:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED, FAILED]
+        dtc_codes:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+
+  responses:
+    BadRequest:
+      description: Помилка валідації вхідних даних
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              details:
+                type: array
+                items:
+                  type: string
+    Unauthorized:
+      description: Відсутній або недійсний JWT-токен
+    TooManyRequests:
+      description: Перевищено ліміт запитів (Rate Limiting)
+    InternalServerError:
+      description: Внутрішня помилка сервера

@@ -1,7 +1,7 @@
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -9,8 +9,36 @@ from pathlib import Path
 from datetime import datetime
 
 
+# Шлях до шрифтів (поруч з цим файлом)
+FONTS_DIR = Path(__file__).parent / "fonts"
+
+
+def register_fonts():
+    """Реєстрація TTF-шрифтів з підтримкою кирилиці"""
+    pdfmetrics.registerFont(
+        TTFont("AutoSpark", str(FONTS_DIR / "DejaVuSans.ttf"))
+    )
+    pdfmetrics.registerFont(
+        TTFont("AutoSpark-Bold", str(FONTS_DIR / "DejaVuSans-Bold.ttf"))
+    )
+    pdfmetrics.registerFont(
+        TTFont("AutoSpark-Italic", str(FONTS_DIR / "DejaVuSans-Oblique.ttf"))
+    )
+    # Реєструємо сімейство шрифтів (щоб <b> та <i> працювали)
+    pdfmetrics.registerFontFamily(
+        "AutoSpark",
+        normal="AutoSpark",
+        bold="AutoSpark-Bold",
+        italic="AutoSpark-Italic",
+        boldItalic="AutoSpark-Bold",
+    )
+
+
 async def generate_diagnostic_report(car_id: int, diagnostics: list) -> str:
-    """Генерація PDF звіту діагностики"""
+    """Генерація PDF звіту діагностики з підтримкою кирилиці"""
+
+    # Реєструємо шрифти
+    register_fonts()
 
     # Папка для звітів
     reports_dir = Path("reports")
@@ -29,13 +57,41 @@ async def generate_diagnostic_report(car_id: int, diagnostics: list) -> str:
         bottomMargin=2 * cm,
     )
 
+    # Стилі з нашим шрифтом
     styles = getSampleStyleSheet()
+
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
+        fontName='AutoSpark-Bold',
         fontSize=18,
         textColor=colors.HexColor('#E32929'),
         spaceAfter=20,
+    )
+
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        fontName='AutoSpark-Bold',
+        fontSize=14,
+        textColor=colors.HexColor('#111111'),
+        spaceAfter=10,
+    )
+
+    normal_style = ParagraphStyle(
+        'CustomNormal',
+        parent=styles['Normal'],
+        fontName='AutoSpark',
+        fontSize=11,
+        leading=16,
+    )
+
+    footer_style = ParagraphStyle(
+        'CustomFooter',
+        parent=styles['Normal'],
+        fontName='AutoSpark-Italic',
+        fontSize=9,
+        textColor=colors.grey,
     )
 
     elements = []
@@ -45,10 +101,13 @@ async def generate_diagnostic_report(car_id: int, diagnostics: list) -> str:
     elements.append(Spacer(1, 0.5 * cm))
 
     # Інформація про авто
-    elements.append(Paragraph(f"<b>Автомобіль ID:</b> {car_id}", styles['Normal']))
+    elements.append(Paragraph(
+        f"<b>Автомобіль ID:</b> {car_id}",
+        normal_style
+    ))
     elements.append(Paragraph(
         f"<b>Дата:</b> {datetime.now().strftime('%d.%m.%Y %H:%M')}",
-        styles['Normal']
+        normal_style
     ))
     elements.append(Spacer(1, 1 * cm))
 
@@ -56,21 +115,24 @@ async def generate_diagnostic_report(car_id: int, diagnostics: list) -> str:
     for diag in diagnostics:
         elements.append(Paragraph(
             f"<b>Діагностика #{diag.id}</b> — {diag.ecu_type or 'Загальна'}",
-            styles['Heading2']
+            heading_style
         ))
 
         if diag.dtc_codes:
-            elements.append(Paragraph("<b>Коди помилок:</b>", styles['Normal']))
+            elements.append(Paragraph("<b>Коди помилок:</b>", normal_style))
             for code in diag.dtc_codes:
-                elements.append(Paragraph(f"• {code}", styles['Normal']))
+                elements.append(Paragraph(f"• {code}", normal_style))
 
         if diag.diagnosis:
-            elements.append(Paragraph(f"<b>Висновок:</b> {diag.diagnosis}", styles['Normal']))
+            elements.append(Paragraph(
+                f"<b>Висновок:</b> {diag.diagnosis}",
+                normal_style
+            ))
 
         if diag.recommendations:
             elements.append(Paragraph(
                 f"<b>Рекомендації:</b> {diag.recommendations}",
-                styles['Normal']
+                normal_style
             ))
 
         elements.append(Spacer(1, 0.5 * cm))
@@ -78,9 +140,9 @@ async def generate_diagnostic_report(car_id: int, diagnostics: list) -> str:
     # Футер
     elements.append(Spacer(1, 1 * cm))
     elements.append(Paragraph(
-        "<i>AutoSpark — вул. Олександра Маланчука, 49, Чернівці<br/>"
-        "Тел: +380 95 212 02 35</i>",
-        styles['Normal']
+        "AutoSpark — вул. Олександра Маланчука, 49, Чернівці<br/>"
+        "Тел: +380 95 212 02 35",
+        footer_style
     ))
 
     # Генеруємо PDF
